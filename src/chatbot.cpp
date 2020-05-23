@@ -8,15 +8,6 @@
 #include "graphedge.h"
 #include "chatbot.h"
 
-// constructor WITHOUT memory allocation
-ChatBot::ChatBot()
-{
-    // invalidate data handles
-    _image = nullptr;
-    _chatLogic = nullptr;
-    _rootNode = nullptr;
-}
-
 // constructor WITH memory allocation
 ChatBot::ChatBot(std::string filename)
 {
