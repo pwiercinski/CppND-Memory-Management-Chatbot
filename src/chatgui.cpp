@@ -2,6 +2,7 @@
 #include <wx/colour.h>
 #include <wx/image.h>
 #include <string>
+#include <memory>
 #include "chatbot.h"
 #include "chatlogic.h"
 #include "chatgui.h"
@@ -104,42 +105,10 @@ BEGIN_EVENT_TABLE(ChatBotPanelDialog, wxPanel)
 EVT_PAINT(ChatBotPanelDialog::paintEvent) // catch paint events
 END_EVENT_TABLE()
 
-ChatBotPanelDialog::ChatBotPanelDialog(wxWindow *parent, wxWindowID id)
-    : wxScrolledWindow(parent, id)
-{
-    // sizer will take care of determining the needed scroll size
-    _dialogSizer = new wxBoxSizer(wxVERTICAL);
-    this->SetSizer(_dialogSizer);
+  
+  
 
-    // allow for PNG images to be handled
-    wxInitAllImageHandlers();
 
-    //// STUDENT CODE
-    ////
-
-    // create chat logic instance
-    _chatLogic = new ChatLogic(); 
-
-    // pass pointer to chatbot dialog so answers can be displayed in GUI
-    _chatLogic->SetPanelDialogHandle(this);
-
-    // load answer graph from file
-    _chatLogic->LoadAnswerGraphFromFile(dataPath + "src/answergraph.txt");
-
-    ////
-    //// EOF STUDENT CODE
-}
-
-ChatBotPanelDialog::~ChatBotPanelDialog()
-{
-    //// STUDENT CODE
-    ////
-
-    delete _chatLogic;
-
-    ////
-    //// EOF STUDENT CODE
-}
 
 void ChatBotPanelDialog::AddDialogItem(wxString text, bool isFromUser)
 {
@@ -158,6 +127,43 @@ void ChatBotPanelDialog::AddDialogItem(wxString text, bool isFromUser)
     this->GetScrollPixelsPerUnit(&dx, &dy);
     int sy = dy * this->GetScrollLines(wxVERTICAL);
     this->DoScroll(0, sy);
+}
+
+ChatBotPanelDialog::ChatBotPanelDialog(wxWindow *parent, wxWindowID id)
+    : wxScrolledWindow(parent, id)
+{
+    // sizer will take care of determining the needed scroll size
+    _dialogSizer = new wxBoxSizer(wxVERTICAL);
+    this->SetSizer(_dialogSizer);
+
+    // allow for PNG images to be handled
+    wxInitAllImageHandlers();
+
+    //// STUDENT CODE
+    ////
+
+    // create chat logic instance
+    _chatLogic = std::unique_ptr<ChatLogic>{new ChatLogic()};
+
+    // pass pointer to chatbot dialog so answers can be displayed in GUI
+    _chatLogic->SetPanelDialogHandle(this);
+
+    // load answer graph from file
+    _chatLogic->LoadAnswerGraphFromFile(dataPath + "src/answergraph.txt");
+
+    ////
+    //// EOF STUDENT CODE
+}
+
+ChatBotPanelDialog::~ChatBotPanelDialog()
+{
+    //// STUDENT CODE
+    ////
+
+    //delete _chatLogic;
+
+    ////
+    //// EOF STUDENT CODE
 }
 
 void ChatBotPanelDialog::PrintChatbotResponse(std::string response)
