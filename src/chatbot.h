@@ -4,6 +4,7 @@
 #include <wx/bitmap.h>
 #include <string>
 #include <iostream>
+#include "chatlogic.h"
 
 class GraphNode; // forward declaration
 class ChatLogic; // forward declaration
@@ -37,10 +38,11 @@ public:
     {
         std::cout << "MOVING ChatBot instance " << &source << " to instance " << this << std::endl;
         _image = source._image;
-        source._image = nullptr;
+        source._image = NULL;
         _currentNode = source._currentNode;
         _rootNode = source._rootNode;
         _chatLogic = source._chatLogic;
+        _chatLogic->SetChatbotHandle(this);
     }
     
     ChatBot &operator=(ChatBot &&source) // 5 : move assignment operator
@@ -55,8 +57,10 @@ public:
         _currentNode = source._currentNode;
         _rootNode = source._rootNode;
         _chatLogic = source._chatLogic;
+        _chatLogic->SetChatbotHandle(this);
 
-        source._image = nullptr;
+        source._image = NULL;
+        
 
         return *this;
     }
