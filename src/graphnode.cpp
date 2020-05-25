@@ -34,16 +34,19 @@ void GraphNode::AddEdgeToChildNode(GraphEdge *edge)
 
 //// STUDENT CODE
 ////
-void GraphNode::MoveChatbotHere(ChatBot *chatbot)
+void GraphNode::MoveChatbotHere(ChatBot &chatbot) // TASK 5
 {
-    _chatBot = chatbot;
+    ChatBot new_cb = std::move(chatbot); // TASK 5
+    _chatBot = &new_cb;
     _chatBot->SetCurrentNode(this);
 }
 
 void GraphNode::MoveChatbotToNewNode(GraphNode *newNode)
 {
-    newNode->MoveChatbotHere(_chatBot);
-    _chatBot = nullptr; // invalidate pointer at source
+    newNode->MoveChatbotHere(*_chatBot); // TASK 5
+    
+    // (removed) invalidate pointer at source
+    // TASK 5
 }
 ////
 //// EOF STUDENT CODE
