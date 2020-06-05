@@ -8,6 +8,17 @@
 #include "graphedge.h"
 #include "chatbot.h"
 
+
+// constructor WITHOUT memory allocation
+ChatBot::ChatBot()
+{
+    // invalidate data handles
+    _image = nullptr;
+    _chatLogic = nullptr;
+    _rootNode = nullptr;
+}
+
+
 // constructor WITH memory allocation
 ChatBot::ChatBot(std::string filename)
 {
@@ -36,6 +47,61 @@ ChatBot::~ChatBot()
 //// STUDENT CODE
 ////
 
+    // ChatBot Copy Constructor for the Rule of Five
+ChatBot::ChatBot(const ChatBot &source)
+{
+    std::cout << "ChatBot Copy Constructor" << std::endl;
+    _image = new wxBitmap(*source._image);
+    _chatLogic = source._chatLogic;
+    _rootNode = source._rootNode;
+    _currentNode = source._currentNode;
+}
+
+// ChatBot Copy Assignment Operator for the Rule of Five
+ChatBot &ChatBot::operator=(const ChatBot &source)
+{
+    std::cout << "ChatBot Copy Assignment Operator" << std::endl;
+    if(this == &source)
+        return *this;
+    
+    delete _image;
+    _image = new wxBitmap(*source._image);
+    _chatLogic = source._chatLogic;
+    _rootNode = source._rootNode;
+    _currentNode = source._currentNode;
+
+    return *this;
+}
+
+ChatBot::ChatBot(ChatBot &&source)
+{
+  std::cout << "MOVING ChatBot instance " << &source << " to instance " << this << std::endl;
+  _image = source._image;
+  source._image = nullptr;
+  _currentNode = source._currentNode;
+  _rootNode = source._rootNode;
+  _chatLogic = source._chatLogic;
+  _chatLogic->SetChatbotHandle(this);
+}
+    
+ChatBot &ChatBot::operator=(ChatBot &&source)
+{
+  std::cout << "MOVING (assign) ChatBot instance " << &source << " to instance " << this << std::endl;
+  if (this == &source)
+    return *this;
+
+  delete _image;
+
+  _image = source._image;
+  _currentNode = source._currentNode;
+  _rootNode = source._rootNode;
+  _chatLogic = source._chatLogic;
+  _chatLogic->SetChatbotHandle(this);
+
+  source._image = nullptr;
+
+  return *this;
+}
 ////
 //// EOF STUDENT CODE
 
