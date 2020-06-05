@@ -14,16 +14,10 @@
 
 
 ChatLogic::ChatLogic()
-{
-    //// STUDENT CODE
-    //// EOF STUDENT CODE
-}
+{}
 
 ChatLogic::~ChatLogic()
-{
-    //// STUDENT CODE
-    //// EOF STUDENT CODE
-}
+{}
 
 template <typename T>
 void ChatLogic::AddAllTokensToElement(std::string tokenID, tokenlist &tokens, T &element)
